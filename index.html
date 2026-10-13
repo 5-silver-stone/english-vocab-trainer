@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b60">
+  <meta name="description" content="영어 단어 암기, 무작위 시험, 문장 배열 학습 프로그램">
+  <title>영어 단어 학습장</title>
+  <style>
+:root{color-scheme:light;--bg:#f4f6f8;--surface:#fff;--ink:#172132;--muted:#667085;--line:#e1e6ed;--primary:#176b60;--primary-light:#e8f4f0;--danger:#be3945;--danger-light:#fff0f1;--radius:13px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;font-size:15px;line-height:1.6}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #93ccbe;outline-offset:2px}a{color:var(--primary)}.wrap{width:min(1060px,calc(100% - 32px));margin:0 auto}.site-header{background:var(--surface);border-bottom:1px solid var(--line)}.brand{padding:26px 0 16px}.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.4px;color:var(--primary)}h1{font-size:27px;line-height:1.3;margin:5px 0}h2{font-size:21px;margin:0 0 7px}h3{font-size:17px;margin:0}p{margin:0}.sub{color:var(--muted);font-size:14px}.tabs{display:flex;gap:22px;overflow:auto}.tab-btn{flex:none;border:0;border-bottom:3px solid transparent;background:none;color:var(--muted);padding:13px 4px;font-weight:700}.tab-btn.active{color:var(--primary);border-color:var(--primary)}main{padding:26px 0 50px}.tab-panel[hidden],.hide{display:none!important}.stack{display:grid;gap:19px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:23px;box-shadow:0 1px 2px rgba(16,24,40,.025)}.panel-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:17px}.hint{margin-top:5px;color:var(--muted);font-size:13px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:17px}.stat{padding:13px 17px;border:1px solid var(--line);border-radius:10px;background:#fcfdfd}.stat-value{display:block;font-weight:800;font-size:25px;line-height:1.3}.stat-title{font-size:12px;color:var(--muted)}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:13px}.toolbar .search{flex:1 1 250px}.field,.field-textarea,.select{width:100%;background:#fff;border:1px solid #cbd3df;border-radius:9px;padding:11px 12px;color:var(--ink);min-height:44px}.field-textarea{resize:vertical;min-height:105px}.select{width:auto;min-width:155px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-field{display:grid;gap:5px}.form-field label{font-weight:700;font-size:13px}.form-field.wide{grid-column:1/-1}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:#fff;padding:9px 16px;border-radius:9px;font-weight:700;color:var(--ink);text-decoration:none;min-height:41px;white-space:nowrap}.btn:hover:not(:disabled){background:#f7f9fa}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover:not(:disabled){background:#11574e}.btn-danger{color:var(--danger);border-color:#eed1d4}.btn-danger:hover:not(:disabled){background:var(--danger-light)}.btn-small{padding:4px 9px;min-height:32px;font-size:12px}.btn-active{color:var(--primary);background:var(--primary-light);border-color:#b9dcd3}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}.word-table{width:100%;border-collapse:collapse;table-layout:fixed}.word-table th{background:#f8fafb;text-align:left;font-weight:800;color:#4b596b;font-size:12px;padding:12px}.word-table td{border-top:1px solid var(--line);padding:12px;vertical-align:top;font-size:13px;overflow-wrap:anywhere}.word-table th:nth-child(1){width:19%}.word-table th:nth-child(2){width:22%}.word-table th:nth-child(3){width:40%}.word-table th:nth-child(4){width:7%}.word-table th:nth-child(5){width:12%}.word-table td:first-child{font-weight:800;font-size:14px}.meaning{color:#344256}.definition{color:#566474}.action-group{display:flex;gap:5px;flex-wrap:wrap}.page-control{margin-top:13px;display:flex;justify-content:center;align-items:center;gap:13px}.empty{padding:26px 8px;color:var(--muted);text-align:center}.notice{padding:13px 15px;background:#f2f8f6;border:1px solid #d9e9e3;color:#335f55;border-radius:9px;font-size:13px}.warning{padding:12px 15px;background:#fff6f2;border:1px solid #f5d8c5;color:#8c451f;border-radius:9px;font-size:13px}.exam-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:21px 0 18px}.number-card{border:1px solid var(--line);border-radius:10px;padding:15px;display:grid;gap:6px}.number-card label{font-weight:800;font-size:14px}.number-card small{color:var(--muted);line-height:1.45}.number-card input{width:100%;border:1px solid #cbd3df;border-radius:8px;padding:9px;font-size:19px;font-weight:800}.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.chip{display:inline-flex;border-radius:20px;background:var(--primary-light);color:var(--primary);padding:4px 10px;font-size:12px;font-weight:800}.progress-track{height:7px;background:#e7ecef;border-radius:10px;overflow:hidden;margin:15px 0 23px}.progress-fill{height:100%;background:var(--primary);width:0;transition:width .15s}.question-eyebrow{color:var(--muted);font-size:13px;font-weight:800;margin-bottom:11px}.question-text{font-size:25px;font-weight:800;line-height:1.45;overflow-wrap:anywhere;margin:0 0 22px}.answer-label{font-weight:800;margin-bottom:7px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.choice{display:block;text-align:left;border:1px solid #d0d8e0;border-radius:10px;padding:14px;background:#fff;min-height:60px;white-space:normal;line-height:1.5}.choice.selected{background:var(--primary-light);color:#17574f;border:2px solid var(--primary);padding:13px}.quiz-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:25px}.score{font-size:34px;font-weight:900;letter-spacing:-1px}.review-item{padding:14px 0;border-bottom:1px solid var(--line)}.review-item:last-child{border:0}.review-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.review-q{font-size:14px;font-weight:800;margin:6px 0}.good{color:#116b4d;font-weight:800}.bad{color:#c33d46;font-weight:800}.review-answer{font-size:13px;line-height:1.75;color:#4d5969}.sentence-list{display:grid;gap:9px}.sentence-row{padding:12px 14px;border:1px solid var(--line);border-radius:9px;display:flex;justify-content:space-between;align-items:center;gap:10px}.sentence-row p{flex:1;overflow-wrap:anywhere}.word-bank,.sentence-board{display:flex;gap:9px;flex-wrap:wrap;min-height:95px;padding:15px;border:1px dashed #c7d5d2;border-radius:10px;background:#fbfdfc;align-content:flex-start}.sentence-board{background:#fff;border-style:solid}.token{font-size:15px;padding:8px 13px;background:white;border:1px solid #9dbdb5;border-radius:8px;font-weight:700;line-height:1.4}.sentence-board .token{background:var(--primary-light);border-color:#a6ccc3;color:#205f54}.token:hover{background:#e8f4f0}.token:disabled{opacity:.35}.sentence-feedback{margin-top:13px;padding:13px;border-radius:9px;background:#f4f6f8}.footer{color:var(--muted);text-align:center;font-size:12px;padding:0 0 30px}.divider{height:1px;background:var(--line);margin:20px 0}.badge-inline{display:inline-block;background:#f1f4f7;border-radius:6px;padding:2px 7px;color:#5c6775;font-size:11px;font-weight:800}@media(max-width:680px){.wrap{width:min(100% - 24px,1060px)}.brand{padding:19px 0 11px}h1{font-size:23px}h2{font-size:19px}.tabs{gap:17px}.tab-btn{padding:10px 3px}.panel{padding:16px}.stats{gap:6px}.stat{padding:9px}.stat-value{font-size:21px}.stat-title{font-size:11px}.form-grid,.exam-grid,.choices{grid-template-columns:1fr}.number-card{grid-template-columns:1fr 75px;align-items:center}.number-card small{grid-column:1}.number-card input{grid-row:1;grid-column:2}.word-table{min-width:750px}.question-text{font-size:21px}.sentence-row{align-items:flex-start;flex-direction:column}.quiz-footer{flex-wrap:wrap}.quiz-footer .btn{flex:1}}
+
+/* 작은 화면의 단어장을 세로형 카드로 표시하고 가로 넘침을 막습니다. */
+.stack {grid-template-columns: minmax(0, 1fr)}
+.panel, .tab-panel, .table-wrap {min-width: 0}
+@media (max-width: 680px) {
+  .word-table {min-width:0; width:100%; display:block; table-layout:auto}
+  .word-table thead {display:none}
+  .word-table tbody {display:block}
+  .word-table tr {display:block; padding:14px 12px; border-bottom:1px solid var(--line)}
+  .word-table tr:last-child {border-bottom:0}
+  .word-table td {display:block; border:0; padding:3px 0; overflow-wrap:anywhere; font-size:13px}
+  .word-table td:first-child {font-size:17px; color:var(--primary); margin-bottom:3px}
+  .word-table td:nth-child(2)::before {content:"뜻  "; font-size:11px; color:var(--muted); font-weight:700}
+  .word-table td:nth-child(3)::before {content:"풀이  "; font-size:11px; color:var(--muted); font-weight:700}
+  .word-table td:nth-child(4)::before {content:"교재  "; font-size:11px; color:var(--muted); font-weight:700}
+  .word-table td:last-child {padding-top:8px}
+  .word-table .action-group {flex-wrap:nowrap}
+  .word-table .btn-small {min-height:35px; padding:6px 14px}
+  .page-control {gap:8px; flex-wrap:wrap}
+}
+
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <div class="eyebrow">ENGLISH WORD TRAINER</div>
+        <h1>영어 단어 학습장</h1>
+        <p class="sub">단어 암기 · 맞춤형 시험 · 영어 문장 배열</p>
+      </div>
+      <nav class="tabs" aria-label="학습 기능">
+        <button class="tab-btn active" data-tab="words" type="button">단어장</button>
+        <button class="tab-btn" data-tab="exam" type="button">단어 시험</button>
+        <button class="tab-btn" data-tab="sentences" type="button">문장 배열</button>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="tab-words" class="tab-panel stack">
+      <div class="panel">
+        <div class="panel-header">
+          <div><h2>내 단어장</h2><p class="sub">제공한 사진 5장의 단어·뜻·영영풀이를 기본으로 등록했어.</p></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="stat-value" id="stat-total">144</span><span class="stat-title">전체 단어</span></div>
+          <div class="stat"><span class="stat-value" id="stat-default">144</span><span class="stat-title">기본 단어</span></div>
+          <div class="stat"><span class="stat-value" id="stat-custom">0</span><span class="stat-title">직접 추가한 단어</span></div>
+        </div>
+        <div class="toolbar">
+          <input type="search" class="field search" id="word-search" placeholder="영어 / 한글 뜻 / 영영풀이 검색" aria-label="단어 검색">
+          <select class="select" id="word-filter" aria-label="단어장 범위">
+            <option value="all">전체 단어</option><option value="unit4">93~99쪽</option><option value="unit5">119~125쪽</option><option value="custom">추가한 단어</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="word-table"><thead><tr><th>영단어</th><th>뜻</th><th>영영풀이</th><th>쪽</th><th>관리</th></tr></thead><tbody id="word-table-body"></tbody></table>
+        </div>
+        <div class="page-control"><button class="btn btn-small" id="word-prev" type="button">이전</button><span class="sub" id="word-pages">1 / 1</span><button class="btn btn-small" id="word-next" type="button">다음</button></div>
+      </div>
+      <div class="panel" id="word-edit-panel">
+        <div class="panel-header"><div><h2 id="word-form-title">영단어 추가</h2><p class="sub">뜻과 영영풀이는 원하는 내용으로 입력하거나 수정할 수 있어.</p></div></div>
+        <form id="word-form" class="stack">
+          <div class="form-grid">
+            <div class="form-field"><label for="word-english">영단어 / 표현</label><input class="field" id="word-english" placeholder="예: sustainable" maxlength="120" required></div>
+            <div class="form-field"><label for="word-meaning">한국어 뜻</label><input class="field" id="word-meaning" placeholder="예: 지속 가능한" maxlength="240" required></div>
+            <div class="form-field wide"><label for="word-definition">영영풀이 (선택)</label><textarea class="field-textarea" id="word-definition" rows="2" maxlength="1500" placeholder="예: capable of continuing without harming the environment"></textarea></div>
+          </div>
+          <div class="row"><button class="btn btn-primary" id="word-save" type="submit">단어 저장</button><button class="btn" id="word-form-reset" type="button">입력 취소</button><span class="sub" id="word-form-status" role="status"></span></div>
+        </form>
+      </div>
+      <div class="panel stack">
+        <div><h2>데이터 저장과 백업</h2><p class="hint">추가·삭제·수정 사항은 지금 사용 중인 브라우저에 저장돼. 다른 기기에는 자동으로 공유되지 않아.</p></div>
+        <div class="row"><button class="btn" id="export-json" type="button">JSON 백업 파일 저장</button><button class="btn" id="import-json" type="button">백업 가져오기</button><input id="import-file" type="file" accept=".json,application/json" hidden><button class="btn btn-danger" id="reset-words" type="button">기본 단어 복원</button></div>
+        <div class="notice">휴대폰을 바꾸거나 브라우저 데이터를 지우기 전에 <strong>JSON 백업</strong>을 저장해 줘. 단어 데이터가 GitHub 계정과 자동 동기화되는 것은 아니야.</div>
+      </div>
+    </section>
+    <section id="tab-exam" class="tab-panel stack" hidden>
+      <div class="panel" id="exam-setup">
+        <h2>맞춤형 단어 시험</h2><p class="sub">원하는 문제 수를 각각 입력하면 세 유형을 무작위로 섞어 출제해.</p>
+        <div class="exam-grid">
+          <div class="number-card"><label for="count-meaning">뜻 문제</label><input type="number" min="0" max="144" step="1" id="count-meaning" value="5"><small>영단어를 보고 한국어 뜻 고르기 · 4지선다</small></div>
+          <div class="number-card"><label for="count-spelling">스펠링 문제</label><input type="number" min="0" max="144" step="1" id="count-spelling" value="5"><small>한국어 뜻을 보고 영어 철자 직접 입력</small></div>
+          <div class="number-card"><label for="count-definition">영영풀이 문제</label><input type="number" min="0" max="144" step="1" id="count-definition" value="5"><small>영어 설명을 읽고 영단어 직접 입력</small></div>
+        </div>
+        <div class="row" style="margin-bottom:17px"><label for="exam-filter" style="font-weight:700">출제 범위</label><select class="select" id="exam-filter"><option value="all">전체 단어</option><option value="unit4">93~99쪽</option><option value="unit5">119~125쪽</option><option value="custom">직접 추가한 단어</option></select></div>
+        <div class="row"><button class="btn btn-primary" id="start-exam" type="button">무작위 시험 시작</button><span id="exam-setup-status" class="sub" role="status"></span></div>
+        <p class="hint">한 번의 시험에서는 같은 단어가 중복 출제되지 않아. 채점 결과는 시험을 모두 마친 후 표시해.</p>
+      </div>
+      <div class="panel hide" id="exam-running">
+        <div class="quiz-top"><span class="chip" id="question-type">뜻 문제</span><span class="sub" id="exam-position">1 / 15</span></div>
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="exam-progress"></div></div>
+        <div class="question-eyebrow" id="question-instruction">알맞은 뜻을 선택하세요.</div>
+        <div class="question-text" id="question-text"></div>
+        <div id="answer-area"></div>
+        <div class="quiz-footer"><button class="btn" id="exam-prev" type="button">이전 문제</button><div class="row"><button class="btn" id="exam-cancel" type="button">시험 취소</button><button class="btn btn-primary" id="exam-next" type="button">다음 문제</button></div></div>
+      </div>
+      <div class="panel hide" id="exam-results"><h2>시험 결과</h2><p class="sub">문제별 정답과 내가 제출한 답을 확인할 수 있어.</p><p style="margin-top:13px"><span class="score" id="exam-score">0 / 0</span><span id="exam-score-percent" class="sub" style="margin-left:12px"></span></p><div id="review-list" style="margin:20px 0"></div><button class="btn btn-primary" id="exam-restart" type="button">새 시험 만들기</button></div>
+    </section>
+    <section id="tab-sentences" class="tab-panel stack" hidden>
+      <div class="panel">
+        <h2>문장 추가하기</h2><p class="sub">연습할 영어 문장을 직접 입력하면 단어 순서를 섞어 배열 문제로 만들 수 있어.</p>
+        <form id="sentence-form" class="stack" style="margin-top:17px">
+          <div class="form-field"><label for="sentence-input">영어 문장 (한 줄에 한 문장)</label><textarea class="field-textarea" id="sentence-input" rows="4" placeholder="예: We should recycle electronic waste.&#10;She tried to solve the problem." required></textarea></div>
+          <div class="row"><button class="btn btn-primary" type="submit">문장 저장</button><span class="sub" id="sentence-status" role="status"></span></div>
+        </form>
+      </div>
+      <div class="panel"><div class="panel-header"><div><h2>저장된 영어 문장</h2><p class="sub" id="sentence-count">저장된 문장 0개</p></div></div><div id="sentence-list" class="sentence-list"></div></div>
+      <div class="panel hide" id="sentence-practice">
+        <div class="panel-header"><div><span class="chip">단어 배열 문제</span><h2 style="margin-top:10px">단어를 올바른 순서로 배열해 봐!</h2><p class="sub">아래 단어를 누르면 순서대로 문장이 만들어져. 위쪽에 놓은 단어는 다시 누르면 취소돼.</p></div><button class="btn btn-small" id="close-practice" type="button">닫기</button></div>
+        <div class="form-field"><label>내가 만든 문장</label><div class="sentence-board" id="sentence-board" aria-live="polite"></div></div>
+        <div class="form-field" style="margin-top:15px"><label>섞인 단어</label><div class="word-bank" id="sentence-bank"></div></div>
+        <div class="row" style="margin-top:18px"><button class="btn btn-primary" id="check-sentence" type="button">정답 확인</button><button class="btn" id="retry-sentence" type="button">다시 섞기</button></div>
+        <div class="sentence-feedback hide" id="sentence-feedback" role="status"></div>
+      </div>
+      <div class="notice">문장 목록도 현재 브라우저에 저장되고, 단어장에서 내보내는 JSON 백업 파일에 함께 포함돼.</div>
+    </section>
+  </main>
+  <footer class="footer wrap">영어 단어 학습장 · 인터넷 없이도 기본 학습 기능 사용 가능 · 학습 데이터는 기기 내 브라우저에 저장</footer>
+  <script>
+// 사진 속 영어 단어·뜻·영영풀이 기본 데이터
+window.DEFAULT_WORDS = [
+  {
+    "id": "default-1",
+    "word": "cycle",
+    "meaning": "순환",
+    "definition": "a series of connected actions that happens repeatedly in a specific order",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-2",
+    "word": "accidentally",
+    "meaning": "실수로, 잘못하여",
+    "definition": "not on purpose; in an unintended manner",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-3",
+    "word": "damage",
+    "meaning": "~에 손상(손해)을 입히다",
+    "definition": "to cause harm to something",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-4",
+    "word": "crack",
+    "meaning": "금이 가다",
+    "definition": "to break without falling apart",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-5",
+    "word": "repair",
+    "meaning": "수리하다",
+    "definition": "to fix something",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-6",
+    "word": "hesitate",
+    "meaning": "망설이다, 주저하다",
+    "definition": "to pause or hold back due to indecision",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-7",
+    "word": "reasonable",
+    "meaning": "합리적인",
+    "definition": "fair, practical, and sensible",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-8",
+    "word": "contribute",
+    "meaning": "기여하다, 이바지하다",
+    "definition": "to play a part in causing something to happen",
+    "page": "93",
+    "source": "기본"
+  },
+  {
+    "id": "default-9",
+    "word": "discard",
+    "meaning": "버리다, 폐기하다",
+    "definition": "to get rid of something unwanted or useless",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-10",
+    "word": "electronic",
+    "meaning": "전자의",
+    "definition": "containing components that control an electric current",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-11",
+    "word": "electrical",
+    "meaning": "전기의, 전기를 이용하는",
+    "definition": "powered by electricity",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-12",
+    "word": "appliance",
+    "meaning": "(가정용) 기기",
+    "definition": "a machine designed to do a specific task",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-13",
+    "word": "toxic",
+    "meaning": "유독성의",
+    "definition": "poisonous or containing a poisonous substance",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-14",
+    "word": "material",
+    "meaning": "물질, 재료",
+    "definition": "a substance that can be used to make things",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-15",
+    "word": "lead",
+    "meaning": "납",
+    "definition": "a soft heavy toxic metallic element",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-16",
+    "word": "hazard",
+    "meaning": "위험 (요소)",
+    "definition": "something that is likely to cause damage",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-17",
+    "word": "alarming",
+    "meaning": "걱정스러운, 두려운",
+    "definition": "capable of causing worry",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-18",
+    "word": "rate",
+    "meaning": "속도",
+    "definition": "the speed at which something happens",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-19",
+    "word": "generate",
+    "meaning": "발생시키다, 만들어 내다",
+    "definition": "to produce",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-20",
+    "word": "predict",
+    "meaning": "예측(예견)하다",
+    "definition": "to make a guess about a future event based on knowledge or reasoning",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-21",
+    "word": "address",
+    "meaning": "(문제 등에 대해) 다루다, 고심하다",
+    "definition": "to make an effort to deal with a problem",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-22",
+    "word": "practical",
+    "meaning": "현실성 있는",
+    "definition": "sensible; likely to succeed in real life",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-23",
+    "word": "approach",
+    "meaning": "접근법",
+    "definition": "a way of dealing with a situation or problem",
+    "page": "94",
+    "source": "기본"
+  },
+  {
+    "id": "default-24",
+    "word": "empower",
+    "meaning": "~에게 권한을 부여하다",
+    "definition": "to give someone the power to do something",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-25",
+    "word": "dispose of",
+    "meaning": "~을 버리다, ~을 처리하다",
+    "definition": "to get rid of something",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-26",
+    "word": "disassemble",
+    "meaning": "분해하다",
+    "definition": "to take apart something especially a piece of machinery or equipment",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-27",
+    "word": "manufacturer",
+    "meaning": "제조사(자)",
+    "definition": "a person or company that produces goods in large amounts",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-28",
+    "word": "intentionally",
+    "meaning": "의도적으로, 일부러",
+    "definition": "on purpose",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-29",
+    "word": "acquire",
+    "meaning": "얻다, 습득하다",
+    "definition": "to get or gain something by one's own efforts",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-30",
+    "word": "legislation",
+    "meaning": "법률 제정",
+    "definition": "a law or group of laws",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-31",
+    "word": "state",
+    "meaning": "명시하다",
+    "definition": "to say or write something formally",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-32",
+    "word": "demand",
+    "meaning": "요구하다",
+    "definition": "to request something forcefully",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-33",
+    "word": "obtain",
+    "meaning": "얻다, 구하다",
+    "definition": "to get something usually by effort",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-34",
+    "word": "install",
+    "meaning": "설치하다",
+    "definition": "to set up something for use",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-35",
+    "word": "custom",
+    "meaning": "맞춤의",
+    "definition": "having been altered to meet specific needs or desires",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-36",
+    "word": "prohibit",
+    "meaning": "금지하다",
+    "definition": "to officially disallow something",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-37",
+    "word": "advocate",
+    "meaning": "지지자, 옹호자",
+    "definition": "someone who speaks or acts in favor of something",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-38",
+    "word": "cause",
+    "meaning": "대의",
+    "definition": "an idea or goal that people support or fight for",
+    "page": "95",
+    "source": "기본"
+  },
+  {
+    "id": "default-39",
+    "word": "index",
+    "meaning": "지수",
+    "definition": "a system that people can reference to obtain information",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-40",
+    "word": "glance",
+    "meaning": "흘긋 봄, 일견",
+    "definition": "a quick short look",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-41",
+    "word": "bill",
+    "meaning": "법안",
+    "definition": "a proposed law",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-42",
+    "word": "lawn mower",
+    "meaning": "잔디 깎는 기계",
+    "definition": "a machine used to cut grass",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-43",
+    "word": "range",
+    "meaning": "~에서 ...사이이다",
+    "definition": "to vary between specific limits in terms of an amount, number, etc.",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-44",
+    "word": "take into account",
+    "meaning": "~을 고려하다",
+    "definition": "to consider when making a decision",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-45",
+    "word": "element",
+    "meaning": "요소",
+    "definition": "a part of something",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-46",
+    "word": "spare",
+    "meaning": "여분의",
+    "definition": "extra but retained in case of an emergency",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-47",
+    "word": "label",
+    "meaning": "라벨, 표; 라벨을 붙이다",
+    "definition": "a piece of paper or cloth with information about the product it is attached to; to attach a label to something",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-48",
+    "word": "whereas",
+    "meaning": "~에 반하여",
+    "definition": "while; on the contrary",
+    "page": "96",
+    "source": "기본"
+  },
+  {
+    "id": "default-49",
+    "word": "informed",
+    "meaning": "정보에 근거한",
+    "definition": "based on information",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-50",
+    "word": "landfill",
+    "meaning": "쓰레기 매립지",
+    "definition": "a place where garbage is buried",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-51",
+    "word": "transition",
+    "meaning": "변화",
+    "definition": "the act of changing from one state to another",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-52",
+    "word": "sustainable",
+    "meaning": "지속 가능한",
+    "definition": "capable of continuing without harming the environment",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-53",
+    "word": "anticipate",
+    "meaning": "기대하다, 고대하다",
+    "definition": "to expect to happen",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-54",
+    "word": "innovative",
+    "meaning": "혁신적인",
+    "definition": "introducing or using new ideas or methods",
+    "page": "97",
+    "source": "기본"
+  },
+  {
+    "id": "default-55",
+    "word": "occur",
+    "meaning": "발생하다",
+    "definition": "to happen",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-56",
+    "word": "staff",
+    "meaning": "~에 직원을 두다",
+    "definition": "to be or supply the workers of an organization",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-57",
+    "word": "neighboring",
+    "meaning": "인접한, 이웃의",
+    "definition": "near or next to something or someone",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-58",
+    "word": "invaluable",
+    "meaning": "매우 유용한, 귀중한",
+    "definition": "extremely beneficial or important",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-59",
+    "word": "maintenance",
+    "meaning": "보수 관리, 정비",
+    "definition": "the act of keeping something in good condition",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-60",
+    "word": "extend",
+    "meaning": "연장하다",
+    "definition": "to make something last longer",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-61",
+    "word": "life span",
+    "meaning": "수명",
+    "definition": "the length of time someone lives or something continues to function",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-62",
+    "word": "foster",
+    "meaning": "조성하다, 발달시키다",
+    "definition": "to promote the development of something",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-63",
+    "word": "perspective",
+    "meaning": "관점, 시각",
+    "definition": "a way of thinking about and understanding something",
+    "page": "98",
+    "source": "기본"
+  },
+  {
+    "id": "default-64",
+    "word": "limit",
+    "meaning": "제한하다",
+    "definition": "to set a restriction or boundary on something",
+    "page": "99",
+    "source": "기본"
+  },
+  {
+    "id": "default-65",
+    "word": "alternatively",
+    "meaning": "그렇지 않으면, 그 대신에",
+    "definition": "as another option",
+    "page": "99",
+    "source": "기본"
+  },
+  {
+    "id": "default-66",
+    "word": "ancient",
+    "meaning": "고대의",
+    "definition": "of or from a very long time ago",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-67",
+    "word": "sculpture",
+    "meaning": "조각품",
+    "definition": "a three-dimensional work of art carved from solid material",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-68",
+    "word": "archaeology",
+    "meaning": "고고학",
+    "definition": "the study of objects from past civilizations and cultures",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-69",
+    "word": "graduate student",
+    "meaning": "대학원생",
+    "definition": "a student with a four-year degree who is pursuing an advanced degree",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-70",
+    "word": "mark",
+    "meaning": "자국, 흔적",
+    "definition": "a visible sign left behind by physical contact",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-71",
+    "word": "marble",
+    "meaning": "대리석",
+    "definition": "a type of hard rock that is often shaped and polished",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-72",
+    "word": "ultraviolet",
+    "meaning": "자외선의",
+    "definition": "relating to radiation with wavelengths shorter than those of visible light",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-73",
+    "word": "surface",
+    "meaning": "표면",
+    "definition": "the outermost layer of something",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-74",
+    "word": "shine",
+    "meaning": "비추다",
+    "definition": "to point a source of light at something",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-75",
+    "word": "astonished",
+    "meaning": "깜짝 놀란",
+    "definition": "shocked and amazed",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-76",
+    "word": "decoration",
+    "meaning": "장식",
+    "definition": "the act or process of making something more beautiful",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-77",
+    "word": "statue",
+    "meaning": "조각상",
+    "definition": "a three-dimensional work of art in the shape of a person or animal",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-78",
+    "word": "architecture",
+    "meaning": "건축(술)",
+    "definition": "the practice of designing and constructing buildings and other structures",
+    "page": "119",
+    "source": "기본"
+  },
+  {
+    "id": "default-79",
+    "word": "investigate",
+    "meaning": "조사(연구)하다",
+    "definition": "to study something through a close examination and systematic inquiry",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-80",
+    "word": "evidence",
+    "meaning": "흔적, 증거",
+    "definition": "a sign that something is true or happened",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-81",
+    "word": "trace",
+    "meaning": "흔적, 자취",
+    "definition": "a sign, mark, or evidence left by someone or something",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-82",
+    "word": "detect",
+    "meaning": "발견하다, 알아내다",
+    "definition": "to discover the presence of something",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-83",
+    "word": "naked",
+    "meaning": "(몸의 일부가) 노출된",
+    "definition": "without any device or instrument",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-84",
+    "word": "undeniable",
+    "meaning": "명백한, 부인할 수 없는",
+    "definition": "inarguable; true without any doubt",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-85",
+    "word": "bare",
+    "meaning": "아무것도 안 덮인",
+    "definition": "uncovered; undecorated",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-86",
+    "word": "canvas",
+    "meaning": "캔버스",
+    "definition": "a piece of cloth that is painted on",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-87",
+    "word": "vivid",
+    "meaning": "선명한, 강렬한",
+    "definition": "strong and bright",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-88",
+    "word": "pigment",
+    "meaning": "안료",
+    "definition": "the material that gives color to paint",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-89",
+    "word": "apply",
+    "meaning": "바르다",
+    "definition": "to spread across a surface",
+    "page": "120",
+    "source": "기본"
+  },
+  {
+    "id": "default-90",
+    "word": "pure",
+    "meaning": "깨끗한, 순수한",
+    "definition": "without anything added to it",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-91",
+    "word": "divine",
+    "meaning": "신성한",
+    "definition": "relating to a god or gods",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-92",
+    "word": "inaccurate",
+    "meaning": "부정확한, 틀린",
+    "definition": "containing errors or false information",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-93",
+    "word": "misconception",
+    "meaning": "오해",
+    "definition": "a wrong, inaccurate, or mistaken idea",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-94",
+    "word": "arise",
+    "meaning": "생기다, 발생하다",
+    "definition": "to appear or emerge",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-95",
+    "word": "excavate",
+    "meaning": "발굴하다",
+    "definition": "to dig in order to uncover buried objects",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-96",
+    "word": "admire",
+    "meaning": "~을 높이 평가하다",
+    "definition": "to consider worthy, valuable, or good",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-97",
+    "word": "wear off",
+    "meaning": "(차츰) 사라지다",
+    "definition": "to gradually disappear due to physical contact",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-98",
+    "word": "fade",
+    "meaning": "(색깔이) 바래다",
+    "definition": "to cause something to lose freshness, color, or brightness",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-99",
+    "word": "plain",
+    "meaning": "장식이 없는",
+    "definition": "having no pattern or decoration",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-100",
+    "word": "marvel",
+    "meaning": "경이로워하다",
+    "definition": "to be very surprised or impressed by something",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-101",
+    "word": "striking",
+    "meaning": "인상적인, 눈에 띄는",
+    "definition": "having a quality that attracts attention",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-102",
+    "word": "enhance",
+    "meaning": "향상시키다",
+    "definition": "to increase or improve something",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-103",
+    "word": "contrast",
+    "meaning": "(명암·빛깔 등의) 대조",
+    "definition": "a quality created by differences in color or light",
+    "page": "121",
+    "source": "기본"
+  },
+  {
+    "id": "default-104",
+    "word": "dig up",
+    "meaning": "(땅에서) 파내다",
+    "definition": "to uncover or find something that had been buried",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-105",
+    "word": "highlight",
+    "meaning": "강조하다",
+    "definition": "to emphasize something",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-106",
+    "word": "elegant",
+    "meaning": "우아한",
+    "definition": "graceful and attractive",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-107",
+    "word": "outline",
+    "meaning": "윤곽",
+    "definition": "a line around the edges of the main shape of something",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-108",
+    "word": "reinforce",
+    "meaning": "강화하다",
+    "definition": "to make stronger",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-109",
+    "word": "scholar",
+    "meaning": "학자",
+    "definition": "someone who is highly educated on a particular subject",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-110",
+    "word": "associate",
+    "meaning": "연관 짓다",
+    "definition": "to link two things together",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-111",
+    "word": "exception",
+    "meaning": "예외",
+    "definition": "something to which a general statement does not apply",
+    "page": "122",
+    "source": "기본"
+  },
+  {
+    "id": "default-112",
+    "word": "appreciation",
+    "meaning": "감탄, 감상",
+    "definition": "recognition of the good qualities of someone or something",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-113",
+    "word": "bias",
+    "meaning": "편견, 편향",
+    "definition": "an unfair feeling for or against something",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-114",
+    "word": "rooted",
+    "meaning": "정착한, 뿌리 깊은",
+    "definition": "firmly established or deeply ingrained",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-115",
+    "word": "founder",
+    "meaning": "창시자",
+    "definition": "a person who begins or creates something",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-116",
+    "word": "remark",
+    "meaning": "발언하다",
+    "definition": "to make a statement of an opinion",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-117",
+    "word": "artifact",
+    "meaning": "공예품",
+    "definition": "an object made or shaped in the past by human hand or labor",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-118",
+    "word": "firmly",
+    "meaning": "확고히",
+    "definition": "in a way that is certain or unlikely to change",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-119",
+    "word": "establish",
+    "meaning": "확립하다",
+    "definition": "to make people accept something or consider it true",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-120",
+    "word": "alter",
+    "meaning": "바뀌다, 바꾸다",
+    "definition": "to become different; to change",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-121",
+    "word": "criticize",
+    "meaning": "비난(비판)하다",
+    "definition": "to find fault with someone's ideas or behavior",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-122",
+    "word": "regard",
+    "meaning": "~을 ...으로 여기다",
+    "definition": "to consider in a specific way",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-123",
+    "word": "inferior",
+    "meaning": "질 낮은, 열등한",
+    "definition": "not as good as other things of the same type",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-124",
+    "word": "immature",
+    "meaning": "미숙한",
+    "definition": "not yet fully developed",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-125",
+    "word": "insist",
+    "meaning": "주장하다",
+    "definition": "to claim that something is true even though others disagree",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-126",
+    "word": "bear",
+    "meaning": "(눈에 보이게) 있다, 지니다",
+    "definition": "to have something",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-127",
+    "word": "civilization",
+    "meaning": "문명",
+    "definition": "an advanced and organized society",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-128",
+    "word": "noticeable",
+    "meaning": "뚜렷한, 분명한",
+    "definition": "likely to be seen or recognized",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-129",
+    "word": "wipe",
+    "meaning": "닦다, 닦아내다",
+    "definition": "to remove by rubbing",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-130",
+    "word": "beneath",
+    "meaning": "아래[밑]에",
+    "definition": "directly under",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-131",
+    "word": "form",
+    "meaning": "형성되다, 생기다",
+    "definition": "to begin to exist or develop",
+    "page": "123",
+    "source": "기본"
+  },
+  {
+    "id": "default-132",
+    "word": "analysis",
+    "meaning": "분석",
+    "definition": "the process of examining something closely to better understand it",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-133",
+    "word": "progress",
+    "meaning": "진행되다",
+    "definition": "to develop or improve over time",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-134",
+    "word": "sufficient",
+    "meaning": "충분한",
+    "definition": "enough for a specific purpose",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-135",
+    "word": "enlighten",
+    "meaning": "깨우치다",
+    "definition": "to give knowledge or understanding to someone",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-136",
+    "word": "recreation",
+    "meaning": "개조물, 재현된 것",
+    "definition": "the act of making a new version of something that already exists",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-137",
+    "word": "exhibition",
+    "meaning": "전시회",
+    "definition": "a public showing of art or interesting objects",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-138",
+    "word": "replica",
+    "meaning": "(실물을 모방하여 만든) 복제품, 모형",
+    "definition": "an exact or very close copy of something",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-139",
+    "word": "plaster",
+    "meaning": "석고",
+    "definition": "a soft material that hardens as it dries",
+    "page": "124",
+    "source": "기본"
+  },
+  {
+    "id": "default-140",
+    "word": "transform",
+    "meaning": "바꾸다, 변형시키다",
+    "definition": "to change into something new",
+    "page": "125",
+    "source": "기본"
+  },
+  {
+    "id": "default-141",
+    "word": "objective",
+    "meaning": "객관적인",
+    "definition": "based on facts rather than personal feelings",
+    "page": "125",
+    "source": "기본"
+  },
+  {
+    "id": "default-142",
+    "word": "overcome",
+    "meaning": "극복하다",
+    "definition": "to successfully get past or deal with",
+    "page": "125",
+    "source": "기본"
+  },
+  {
+    "id": "default-143",
+    "word": "pause",
+    "meaning": "잠시 멈추다",
+    "definition": "to stop doing something temporarily",
+    "page": "125",
+    "source": "기본"
+  },
+  {
+    "id": "default-144",
+    "word": "stereotype",
+    "meaning": "고정관념",
+    "definition": "a widely held and fixed image or idea about a particular type of person or thing",
+    "page": "125",
+    "source": "기본"
+  }
+];
+
+</script>
+  <script>
+(() => {
+  'use strict';
+  const WORD_KEY = 'english-word-trainer.words.v1';
+  const SENTENCE_KEY = 'english-word-trainer.sentences.v1';
+  const PAGE_SIZE = 20;
+  const $ = (id) => document.getElementById(id);
+  const qsa = (selector) => [...document.querySelectorAll(selector)];
+  const escapeHTML = (text) => String(text ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const randomId = () => 'my-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9);
+  const normalize = (value) => String(value ?? '').normalize('NFKC').trim().toLowerCase().replace(/[‘’]/g, "'").replace(/\s+/g, ' ');
+  const shuffle = (array) => {
+    const a = [...array];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+  const copyDefault = () => window.DEFAULT_WORDS.map((word) => ({...word}));
+  const isValidWord = (w) => w && typeof w.word === 'string' && w.word.trim() && typeof w.meaning === 'string' && w.meaning.trim();
+  const sanitizedWords = (items) => items.filter(isValidWord).map((w) => ({
+    id: String(w.id || randomId()),
+    word: w.word.trim(), meaning: w.meaning.trim(),
+    definition: String(w.definition || '').trim(),
+    page: String(w.page || '-'), source: w.source === '기본' ? '기본' : '추가'
+  }));
+  function stored(key, fallback) {
+    try {
+      const data = localStorage.getItem(key);
+      if (data !== null) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (error) { console.warn('저장 자료를 읽을 수 없습니다.', error); }
+    return fallback;
+  }
+  let words = sanitizedWords(stored(WORD_KEY, copyDefault()));
+  let sentences = stored(SENTENCE_KEY, []).filter((s) => s && typeof s.text === 'string' && s.text.trim()).map((s) => ({id: String(s.id || randomId()), text: s.text.trim()}));
+  let editWordId = null;
+  let currentWordPage = 1;
+  let exam = null;
+  let practice = null;
+
+  function saveWords() {
+    try { localStorage.setItem(WORD_KEY, JSON.stringify(words)); return true; }
+    catch { alert('이 브라우저에 저장할 수 없어. 저장 공간이나 개인정보 보호 모드를 확인해 줘.'); return false; }
+  }
+  function saveSentences() {
+    try { localStorage.setItem(SENTENCE_KEY, JSON.stringify(sentences)); return true; }
+    catch { alert('문장을 저장할 수 없어. 저장 공간이나 브라우저 설정을 확인해 줘.'); return false; }
+  }
+  function inScope(item, scope) {
+    if (scope === 'custom') return item.source !== '기본';
+    const page = Number(item.page);
+    if (scope === 'unit4') return page >= 93 && page <= 99;
+    if (scope === 'unit5') return page >= 119 && page <= 125;
+    return true;
+  }
+  function setStatus(element, message) { element.textContent = message; }
+  function showTab(name) {
+    for (const tab of ['words','exam','sentences']) {
+      $('tab-' + tab).hidden = tab !== name;
+    }
+    qsa('.tab-btn').forEach((btn) => {
+      const active = btn.dataset.tab === name;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    if (name === 'words') renderWords();
+    if (name === 'sentences') renderSentences();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  qsa('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+
+  function renderWords() {
+    $('stat-total').textContent = words.length;
+    $('stat-default').textContent = words.filter((w) => w.source === '기본').length;
+    $('stat-custom').textContent = words.filter((w) => w.source !== '기본').length;
+    const query = normalize($('word-search').value);
+    const scope = $('word-filter').value;
+    const filtered = words.filter((w) => inScope(w, scope) && (!query || [w.word,w.meaning,w.definition].some((value) => normalize(value).includes(query))));
+    const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    currentWordPage = Math.max(1, Math.min(pageCount, currentWordPage));
+    const start = (currentWordPage - 1) * PAGE_SIZE;
+    $('word-table-body').innerHTML = filtered.length ? filtered.slice(start, start + PAGE_SIZE).map((w) => `
+      <tr>
+        <td>${escapeHTML(w.word)}</td>
+        <td class="meaning">${escapeHTML(w.meaning)}</td>
+        <td class="definition">${escapeHTML(w.definition || '(영영풀이 없음)')}</td>
+        <td>${escapeHTML(w.page)}</td>
+        <td><div class="action-group"><button type="button" class="btn btn-small" data-edit="${escapeHTML(w.id)}">수정</button><button type="button" class="btn btn-small btn-danger" data-delete="${escapeHTML(w.id)}">삭제</button></div></td>
+      </tr>`).join('') : '<tr><td colspan="5" class="empty">해당하는 단어가 없어.</td></tr>';
+    $('word-pages').textContent = `${currentWordPage} / ${pageCount} (검색 결과 ${filtered.length}개)`;
+    $('word-prev').disabled = currentWordPage === 1;
+    $('word-next').disabled = currentWordPage === pageCount;
+  }
+  $('word-search').addEventListener('input', () => {currentWordPage = 1; renderWords();});
+  $('word-filter').addEventListener('change', () => {currentWordPage = 1; renderWords();});
+  $('word-prev').addEventListener('click', () => {currentWordPage--; renderWords();});
+  $('word-next').addEventListener('click', () => {currentWordPage++; renderWords();});
+  $('word-table-body').addEventListener('click', (event) => {
+    const edit = event.target.closest('[data-edit]');
+    const del = event.target.closest('[data-delete]');
+    if (edit) {
+      const word = words.find((w) => w.id === edit.dataset.edit);
+      if (!word) return;
+      editWordId = word.id;
+      $('word-english').value = word.word;
+      $('word-meaning').value = word.meaning;
+      $('word-definition').value = word.definition;
+      $('word-form-title').textContent = '영단어 수정';
+      $('word-save').textContent = '수정 저장';
+      $('word-form-status').textContent = '';
+      $('word-edit-panel').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    if (del) {
+      const word = words.find((w) => w.id === del.dataset.delete);
+      if (!word || !confirm(`'${word.word}' 단어를 삭제할까?`)) return;
+      words = words.filter((w) => w.id !== word.id);
+      saveWords();
+      if (editWordId === word.id) resetWordForm();
+      renderWords();
+    }
+  });
+  function resetWordForm() {
+    editWordId = null;
+    $('word-form').reset();
+    $('word-form-title').textContent = '영단어 추가';
+    $('word-save').textContent = '단어 저장';
+    $('word-form-status').textContent = '';
+  }
+  $('word-form-reset').addEventListener('click', resetWordForm);
+  $('word-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const english = $('word-english').value.trim();
+    const meaning = $('word-meaning').value.trim();
+    const definition = $('word-definition').value.trim();
+    if (!english || !meaning) return;
+    const duplicate = words.some((w) => w.id !== editWordId && normalize(w.word) === normalize(english));
+    if (duplicate) {setStatus($('word-form-status'),'이미 등록된 영단어야. 기존 단어를 수정해 줘.'); return;}
+    if (editWordId) {
+      const item = words.find((w) => w.id === editWordId);
+      if (!item) {resetWordForm(); return;}
+      Object.assign(item,{word:english,meaning,definition});
+    } else {
+      words.push({id:randomId(),word:english,meaning,definition,page:'-',source:'추가'});
+    }
+    saveWords(); resetWordForm();
+    $('word-form-status').textContent = '저장했어!';
+    currentWordPage = 1; $('word-search').value = ''; $('word-filter').value = 'all';
+    renderWords();
+  });
+  $('reset-words').addEventListener('click', () => {
+    if (!confirm('단어장 전체를 초기 사진의 기본 144개로 되돌릴까? 직접 추가하거나 수정한 단어도 사라져.\n먼저 JSON 백업을 저장하는 걸 권장해.')) return;
+    words = copyDefault(); saveWords(); resetWordForm(); renderWords();
+  });
+  $('export-json').addEventListener('click', () => {
+    const content = JSON.stringify({version:1, exportedAt:new Date().toISOString(), words, sentences},null,2);
+    const blob = new Blob([content],{type:'application/json;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a'); link.href = url;
+    link.download = 'english-word-trainer-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  });
+  $('import-json').addEventListener('click', () => $('import-file').click());
+  $('import-file').addEventListener('change', async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (file.size > 5_000_000) {alert('5MB 이하 JSON 백업 파일만 가져올 수 있어.');return;}
+    try {
+      const payload = JSON.parse(await file.text());
+      if (!payload || !Array.isArray(payload.words) || !Array.isArray(payload.sentences) || !payload.words.every(isValidWord) || !payload.sentences.every((s) => s && typeof s.text === 'string')) throw new Error('백업 형식이 달라.');
+      if (!confirm(`이 백업의 단어 ${payload.words.length}개와 문장 ${payload.sentences.length}개로 현재 데이터를 교체할까?`)) return;
+      words = sanitizedWords(payload.words);
+      sentences = payload.sentences.map((s) => ({id:String(s.id || randomId()),text:s.text.trim()})).filter((s) => s.text);
+      saveWords(); saveSentences(); resetWordForm(); renderWords(); renderSentences();
+      alert('백업을 불러왔어.');
+    } catch (error) {alert('백업 파일을 읽지 못했어. 이 사이트에서 저장한 JSON 파일인지 확인해 줘.');}
+  });
+
+  function availableWords() {return words.filter((w) => inScope(w, $('exam-filter').value));}
+  function getCount(id) {
+    const value = $(id).value.trim();
+    if (value === '' || !/^\d+$/.test(value)) throw new Error('문제 수는 0 이상의 정수로 입력해 줘.');
+    return Number(value);
+  }
+  function prepareExam() {
+    const amounts = {meaning:getCount('count-meaning'),spelling:getCount('count-spelling'),definition:getCount('count-definition')};
+    const count = amounts.meaning + amounts.spelling + amounts.definition;
+    const pool = availableWords();
+    if (count === 0) throw new Error('최소 1문제 이상 선택해 줘.');
+    if (count > pool.length) throw new Error(`현재 범위에 단어가 ${pool.length}개 있어. 총 문제 수를 줄여 줘.`);
+    const eligibleDef = pool.filter((w) => w.definition);
+    if (amounts.definition > eligibleDef.length) throw new Error(`영영풀이가 있는 단어는 ${eligibleDef.length}개야. 영영 문제 수를 줄여 줘.`);
+    const chosen = new Set();
+    function draw(candidates, n, type) {
+      return shuffle(candidates.filter((w) => !chosen.has(w.id))).slice(0,n).map((w) => {chosen.add(w.id);return {type,word:w,answer:''};});
+    }
+    const definitions = draw(eligibleDef, amounts.definition,'definition');
+    const spellings = draw(pool, amounts.spelling,'spelling');
+    const meanings = draw(pool, amounts.meaning,'meaning');
+    const problems = shuffle([...definitions,...spellings,...meanings]);
+    for (const problem of problems) {
+      if (problem.type === 'meaning') {
+        const correct = problem.word.meaning;
+        const distractors = shuffle([...new Set(pool.map((w) => w.meaning).filter((text) => text !== correct))]).slice(0,3);
+        problem.options = shuffle([correct,...distractors]);
+      }
+    }
+    return problems;
+  }
+  function viewExam(mode) {
+    $('exam-setup').classList.toggle('hide',mode !== 'setup');
+    $('exam-running').classList.toggle('hide',mode !== 'running');
+    $('exam-results').classList.toggle('hide',mode !== 'results');
+  }
+  $('start-exam').addEventListener('click', () => {
+    try {
+      const problems = prepareExam();
+      exam = {problems,index:0};
+      $('exam-setup-status').textContent = '';
+      viewExam('running'); renderQuestion();
+    } catch (error) {setStatus($('exam-setup-status'),error.message);}
+  });
+  function questionTitle(problem) {
+    return problem.type === 'meaning' ? '다음 영단어의 뜻을 고르세요.' : problem.type === 'spelling' ? '다음 한국어 뜻에 맞는 영단어를 쓰세요.' : '다음 영영풀이에 해당하는 영단어를 쓰세요.';
+  }
+  function renderQuestion() {
+    if (!exam) return;
+    const {problems,index} = exam;
+    const problem = problems[index];
+    $('exam-position').textContent = `${index + 1} / ${problems.length}`;
+    $('exam-progress').style.width = `${100 * (index+1) / problems.length}%`;
+    $('question-type').textContent = ({meaning:'뜻 문제',spelling:'스펠링 문제',definition:'영영풀이 문제'})[problem.type];
+    $('question-instruction').textContent = questionTitle(problem);
+    $('question-text').textContent = problem.type === 'meaning' ? problem.word.word : problem.type === 'spelling' ? problem.word.meaning : problem.word.definition;
+    const area = $('answer-area');
+    area.replaceChildren();
+    if (problem.type === 'meaning') {
+      const choices = document.createElement('div'); choices.className = 'choices';
+      problem.options.forEach((option,index) => {
+        const btn = document.createElement('button'); btn.type='button';
+        btn.className = 'choice' + (problem.answer === option ? ' selected' : '');
+        btn.textContent = `${index+1}. ${option}`;
+        btn.setAttribute('aria-pressed',String(problem.answer === option));
+        btn.addEventListener('click',() => {problem.answer = option;renderQuestion();});
+        choices.appendChild(btn);
+      });
+      area.appendChild(choices);
+    } else {
+      const label = document.createElement('label'); label.className = 'answer-label'; label.htmlFor = 'typed-answer'; label.textContent = '영어 정답 입력';
+      const input = document.createElement('input');input.className='field';input.id='typed-answer';input.type='text';input.autocomplete='off';input.spellcheck=false;input.placeholder='영단어를 영어로 입력';input.value=problem.answer;
+      input.addEventListener('input',() => {problem.answer=input.value;});
+      input.addEventListener('keydown',(e) => {if (e.key === 'Enter') {e.preventDefault();nextQuestion();}});
+      area.append(label,input);
+    }
+    $('exam-prev').disabled = index === 0;
+    $('exam-next').textContent = index === problems.length-1 ? '시험 제출 및 채점' : '다음 문제';
+  }
+  $('exam-prev').addEventListener('click',() => {if (exam && exam.index>0) {exam.index--;renderQuestion();}});
+  function nextQuestion() {
+    if (!exam) return;
+    if (exam.index < exam.problems.length - 1) {exam.index++;renderQuestion();}
+    else finishExam();
+  }
+  $('exam-next').addEventListener('click',nextQuestion);
+  $('exam-cancel').addEventListener('click',() => {
+    if (confirm('진행 중인 시험을 취소할까? 답안은 저장되지 않아.')) {exam=null;viewExam('setup');}
+  });
+  function finishExam() {
+    const blankCount = exam.problems.filter((p) => !String(p.answer).trim()).length;
+    if (blankCount && !confirm(`답하지 않은 문제가 ${blankCount}개 있어. 그래도 채점할까?`)) return;
+    const right = exam.problems.filter((p) => normalize(p.answer) === normalize(p.type === 'meaning' ? p.word.meaning : p.word.word)).length;
+    const total = exam.problems.length;
+    $('exam-score').textContent = `${right} / ${total}`;
+    $('exam-score-percent').textContent = `정답률 ${Math.round(100 * right / total)}%`;
+    $('review-list').innerHTML = exam.problems.map((p,index) => {
+      const correct = p.type === 'meaning' ? p.word.meaning : p.word.word;
+      const isCorrect = normalize(p.answer) === normalize(correct);
+      const prompt = p.type === 'meaning' ? p.word.word : p.type === 'spelling' ? p.word.meaning : p.word.definition;
+      const type = ({meaning:'뜻',spelling:'스펠링',definition:'영영풀이'})[p.type];
+      return `<div class="review-item">
+        <div class="review-top"><span class="badge-inline">${index+1}번 · ${type}</span><span class="${isCorrect ? 'good' : 'bad'}">${isCorrect ? '정답' : '오답'}</span></div>
+        <div class="review-q">${escapeHTML(prompt)}</div>
+        <div class="review-answer">내 답: ${escapeHTML(p.answer || '(미응답)')}<br>정답: <strong>${escapeHTML(correct)}</strong></div>
+      </div>`;
+    }).join('');
+    viewExam('results');
+    $('exam-results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  $('exam-restart').addEventListener('click', () => {exam=null;viewExam('setup');$('exam-setup').scrollIntoView({behavior:'smooth',block:'start'});});
+
+  function renderSentences() {
+    $('sentence-count').textContent = `저장된 문장 ${sentences.length}개`;
+    const list = $('sentence-list');list.replaceChildren();
+    if (!sentences.length) {list.innerHTML = '<p class="empty">아직 등록한 문장이 없어. 위에서 영어 문장을 추가해 봐.</p>';return;}
+    for (const item of sentences) {
+      const row=document.createElement('div');row.className='sentence-row';
+      const text=document.createElement('p');text.textContent=item.text;
+      const actions=document.createElement('div');actions.className='row';
+      const play=document.createElement('button');play.type='button';play.className='btn btn-small btn-primary';play.textContent='배열 연습';play.addEventListener('click',()=>startPractice(item));
+      const del=document.createElement('button');del.type='button';del.className='btn btn-small btn-danger';del.textContent='삭제';del.addEventListener('click',()=>{
+        if (!confirm('이 문장을 삭제할까?'))return;
+        sentences=sentences.filter((s)=>s.id!==item.id);saveSentences();
+        if(practice?.id===item.id){practice=null;$('sentence-practice').classList.add('hide');}
+        renderSentences();
+      });
+      actions.append(play,del);row.append(text,actions);list.appendChild(row);
+    }
+  }
+  $('sentence-form').addEventListener('submit',(event)=>{
+    event.preventDefault();
+    const lines=$('sentence-input').value.split(/\r?\n/).map((s)=>s.trim()).filter(Boolean);
+    let added=0;
+    const existing=new Set(sentences.map((s)=>normalize(s.text)));
+    for(const line of lines) {
+      if(line.split(/\s+/).length<2 || existing.has(normalize(line)))continue;
+      sentences.push({id:randomId(),text:line}); existing.add(normalize(line));added++;
+    }
+    if(added){saveSentences();$('sentence-input').value='';renderSentences();}
+    $('sentence-status').textContent=added ? `문장 ${added}개를 저장했어.` : '두 단어 이상인 새로운 문장을 입력해 줘.';
+  });
+  function reshufflePractice() {
+    if(!practice)return;
+    practice.bank=shuffle(practice.tokens.map((text,i)=>({text,i})));
+    if(practice.bank.length>1 && practice.bank.every((part,index)=>part.i===index)) [practice.bank[0],practice.bank[1]]=[practice.bank[1],practice.bank[0]];
+    practice.placed=[];
+    $('sentence-feedback').classList.add('hide');
+    renderPractice();
+  }
+  function startPractice(sentence) {
+    practice={id:sentence.id,original:sentence.text,tokens:sentence.text.split(/\s+/),bank:[],placed:[]};
+    reshufflePractice();
+    $('sentence-practice').classList.remove('hide');
+    $('sentence-practice').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function renderPractice() {
+    if (!practice)return;
+    const board=$('sentence-board'),bank=$('sentence-bank');board.replaceChildren();bank.replaceChildren();
+    for(const part of practice.placed){
+      const btn=document.createElement('button');btn.type='button';btn.className='token';btn.textContent=part.text;
+      btn.title='클릭하여 배열에서 빼기';btn.addEventListener('click',()=>{practice.placed=practice.placed.filter((p)=>p.i!==part.i);$('sentence-feedback').classList.add('hide');renderPractice();});board.appendChild(btn);
+    }
+    if(!practice.placed.length){const empty=document.createElement('span');empty.className='sub';empty.textContent='아래 단어를 눌러 문장을 완성해 봐.';board.appendChild(empty);}
+    for(const part of practice.bank){
+      const btn=document.createElement('button');btn.type='button';btn.className='token';btn.textContent=part.text;
+      const used=practice.placed.some((p)=>p.i===part.i);btn.disabled=used;
+      btn.addEventListener('click',()=>{practice.placed.push(part);$('sentence-feedback').classList.add('hide');renderPractice();});bank.appendChild(btn);
+    }
+  }
+  $('check-sentence').addEventListener('click',()=>{
+    if(!practice)return;
+    const target=$('sentence-feedback');target.classList.remove('hide');
+    if(practice.placed.length!==practice.tokens.length){target.textContent='아직 배열하지 않은 단어가 있어.';return;}
+    const attempt=practice.placed.map((p)=>p.text).join(' ');
+    const correct=normalize(attempt)===normalize(practice.original);
+    target.textContent=correct?'정답이야! 문장 순서를 정확히 배열했어.':`아쉬워! 정답: ${practice.original}`;
+    target.style.color=correct?'#116b4d':'#9f3941';
+  });
+  $('retry-sentence').addEventListener('click',reshufflePractice);
+  $('close-practice').addEventListener('click',()=>{$('sentence-practice').classList.add('hide');practice=null;});
+
+  renderWords();renderSentences();viewExam('setup');
+})();
+
+</script>
+</body>
+</html>
