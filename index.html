@@ -90,7 +90,7 @@
       <div class="panel" id="exam-setup">
         <h2>맞춤형 단어 시험</h2><p class="sub">원하는 문제 수를 각각 입력하면 세 유형을 무작위로 섞어 출제해.</p>
         <div class="exam-grid">
-          <div class="number-card"><label for="count-meaning">뜻 문제</label><input type="number" min="0" max="144" step="1" id="count-meaning" value="5"><small>영단어를 보고 한국어 뜻 고르기 · 4지선다</small></div>
+          <div class="number-card"><label for="count-meaning">뜻 문제</label><input type="number" min="0" max="144" step="1" id="count-meaning" value="5"><small>영단어를 보고 한국어 뜻 직접 입력</small></div>
           <div class="number-card"><label for="count-spelling">스펠링 문제</label><input type="number" min="0" max="144" step="1" id="count-spelling" value="5"><small>한국어 뜻을 보고 영어 철자 직접 입력</small></div>
           <div class="number-card"><label for="count-definition">영영풀이 문제</label><input type="number" min="0" max="144" step="1" id="count-definition" value="5"><small>영어 설명을 읽고 영단어 직접 입력</small></div>
         </div>
@@ -101,7 +101,7 @@
       <div class="panel hide" id="exam-running">
         <div class="quiz-top"><span class="chip" id="question-type">뜻 문제</span><span class="sub" id="exam-position">1 / 15</span></div>
         <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="exam-progress"></div></div>
-        <div class="question-eyebrow" id="question-instruction">알맞은 뜻을 선택하세요.</div>
+        <div class="question-eyebrow" id="question-instruction">알맞은 뜻을 입력하세요.</div>
         <div class="question-text" id="question-text"></div>
         <div id="answer-area"></div>
         <div class="quiz-footer"><button class="btn" id="exam-prev" type="button">이전 문제</button><div class="row"><button class="btn" id="exam-cancel" type="button">시험 취소</button><button class="btn btn-primary" id="exam-next" type="button">다음 문제</button></div></div>
@@ -1491,13 +1491,6 @@ window.DEFAULT_WORDS = [
     const spellings = draw(pool, amounts.spelling,'spelling');
     const meanings = draw(pool, amounts.meaning,'meaning');
     const problems = shuffle([...definitions,...spellings,...meanings]);
-    for (const problem of problems) {
-      if (problem.type === 'meaning') {
-        const correct = problem.word.meaning;
-        const distractors = shuffle([...new Set(pool.map((w) => w.meaning).filter((text) => text !== correct))]).slice(0,3);
-        problem.options = shuffle([correct,...distractors]);
-      }
-    }
     return problems;
   }
   function viewExam(mode) {
@@ -1514,7 +1507,7 @@ window.DEFAULT_WORDS = [
     } catch (error) {setStatus($('exam-setup-status'),error.message);}
   });
   function questionTitle(problem) {
-    return problem.type === 'meaning' ? '다음 영단어의 뜻을 고르세요.' : problem.type === 'spelling' ? '다음 한국어 뜻에 맞는 영단어를 쓰세요.' : '다음 영영풀이에 해당하는 영단어를 쓰세요.';
+    return problem.type === 'meaning' ? '다음 영단어의 한국어 뜻을 입력하세요.' : problem.type === 'spelling' ? '다음 한국어 뜻에 맞는 영단어를 쓰세요.' : '다음 영영풀이에 해당하는 영단어를 쓰세요.';
   }
   function renderQuestion() {
     if (!exam) return;
@@ -1527,24 +1520,14 @@ window.DEFAULT_WORDS = [
     $('question-text').textContent = problem.type === 'meaning' ? problem.word.word : problem.type === 'spelling' ? problem.word.meaning : problem.word.definition;
     const area = $('answer-area');
     area.replaceChildren();
-    if (problem.type === 'meaning') {
-      const choices = document.createElement('div'); choices.className = 'choices';
-      problem.options.forEach((option,index) => {
-        const btn = document.createElement('button'); btn.type='button';
-        btn.className = 'choice' + (problem.answer === option ? ' selected' : '');
-        btn.textContent = `${index+1}. ${option}`;
-        btn.setAttribute('aria-pressed',String(problem.answer === option));
-        btn.addEventListener('click',() => {problem.answer = option;renderQuestion();});
-        choices.appendChild(btn);
-      });
-      area.appendChild(choices);
-    } else {
-      const label = document.createElement('label'); label.className = 'answer-label'; label.htmlFor = 'typed-answer'; label.textContent = '영어 정답 입력';
-      const input = document.createElement('input');input.className='field';input.id='typed-answer';input.type='text';input.autocomplete='off';input.spellcheck=false;input.placeholder='영단어를 영어로 입력';input.value=problem.answer;
-      input.addEventListener('input',() => {problem.answer=input.value;});
-      input.addEventListener('keydown',(e) => {if (e.key === 'Enter') {e.preventDefault();nextQuestion();}});
-      area.append(label,input);
-    }
+    const label = document.createElement('label'); label.className = 'answer-label'; label.htmlFor = 'typed-answer';
+    label.textContent = problem.type === 'meaning' ? '한국어 뜻 입력' : '영어 정답 입력';
+    const input = document.createElement('input');input.className='field';input.id='typed-answer';input.type='text';input.autocomplete='off';input.spellcheck=false;
+    input.placeholder = problem.type === 'meaning' ? '한국어 뜻을 입력' : '영단어를 영어로 입력';
+    input.value=problem.answer;
+    input.addEventListener('input',() => {problem.answer=input.value;});
+    input.addEventListener('keydown',(e) => {if (e.key === 'Enter') {e.preventDefault();nextQuestion();}});
+    area.append(label,input);
     $('exam-prev').disabled = index === 0;
     $('exam-next').textContent = index === problems.length-1 ? '시험 제출 및 채점' : '다음 문제';
   }
@@ -1558,16 +1541,23 @@ window.DEFAULT_WORDS = [
   $('exam-cancel').addEventListener('click',() => {
     if (confirm('진행 중인 시험을 취소할까? 답안은 저장되지 않아.')) {exam=null;viewExam('setup');}
   });
+  function correctExamAnswer(p) {
+    if (p.type !== 'meaning') return normalize(p.answer) === normalize(p.word.word);
+    const typed = normalize(p.answer);
+    if (!typed) return false;
+    const complete = normalize(p.word.meaning);
+    return typed === complete || String(p.word.meaning).split(/[,，、;；]/).some((part) => normalize(part) === typed);
+  }
   function finishExam() {
     const blankCount = exam.problems.filter((p) => !String(p.answer).trim()).length;
     if (blankCount && !confirm(`답하지 않은 문제가 ${blankCount}개 있어. 그래도 채점할까?`)) return;
-    const right = exam.problems.filter((p) => normalize(p.answer) === normalize(p.type === 'meaning' ? p.word.meaning : p.word.word)).length;
+    const right = exam.problems.filter(correctExamAnswer).length;
     const total = exam.problems.length;
     $('exam-score').textContent = `${right} / ${total}`;
     $('exam-score-percent').textContent = `정답률 ${Math.round(100 * right / total)}%`;
     $('review-list').innerHTML = exam.problems.map((p,index) => {
       const correct = p.type === 'meaning' ? p.word.meaning : p.word.word;
-      const isCorrect = normalize(p.answer) === normalize(correct);
+      const isCorrect = correctExamAnswer(p);
       const prompt = p.type === 'meaning' ? p.word.word : p.type === 'spelling' ? p.word.meaning : p.word.definition;
       const type = ({meaning:'뜻',spelling:'스펠링',definition:'영영풀이'})[p.type];
       return `<div class="review-item">
