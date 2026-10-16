@@ -1520,6 +1520,13 @@ window.DEFAULT_WORDS = [
     $('question-text').textContent = problem.type === 'meaning' ? problem.word.word : problem.type === 'spelling' ? problem.word.meaning : problem.word.definition;
     const area = $('answer-area');
     area.replaceChildren();
+    if (problem.type === 'spelling') {
+      const hint = document.createElement('p');
+      hint.className = 'sub';
+      hint.style.marginBottom = '12px';
+      hint.textContent = '첫 글자 힌트: ' + String(problem.word.word).trim().charAt(0);
+      area.appendChild(hint);
+    }
     const label = document.createElement('label'); label.className = 'answer-label'; label.htmlFor = 'typed-answer';
     label.textContent = problem.type === 'meaning' ? '한국어 뜻 입력' : '영어 정답 입력';
     const input = document.createElement('input');input.className='field';input.id='typed-answer';input.type='text';input.autocomplete='off';input.spellcheck=false;
