@@ -1520,7 +1520,7 @@ window.DEFAULT_WORDS = [
     $('question-text').textContent = problem.type === 'meaning' ? problem.word.word : problem.type === 'spelling' ? problem.word.meaning : problem.word.definition;
     const area = $('answer-area');
     area.replaceChildren();
-    if (problem.type === 'spelling') {
+    if (problem.type === 'spelling' || problem.type === 'definition') {
       const hint = document.createElement('p');
       hint.className = 'sub';
       hint.style.marginBottom = '12px';
