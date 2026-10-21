@@ -30,15 +30,50 @@
   .page-control {gap:8px; flex-wrap:wrap}
 }
 
+
+.auth-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--bg)}
+.auth-card{width:min(440px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px}
+.auth-card h1{font-size:25px;margin:0 0 8px}
+.auth-switch{display:flex;gap:8px;margin:20px 0}
+.auth-switch .btn{flex:1}
+.auth-card form{display:grid;gap:13px}
+.auth-card form[hidden]{display:none}
+.auth-card label{font-weight:700;font-size:13px}
+.auth-note{margin-top:18px;padding:12px;background:#f4f7f8;border-radius:9px;color:#566474;font-size:12px}
+.auth-status{min-height:22px;font-size:13px;color:var(--danger);margin:8px 0}
+.profile-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+@media(max-width:680px){.auth-card{padding:20px}}
 </style>
 </head>
 <body>
+  <section id="auth-shell" class="auth-page">
+    <div class="auth-card">
+      <div class="eyebrow">ENGLISH WORD TRAINER</div>
+      <h1>영어 단어 학습장</h1>
+      <p class="sub">현재 기기에 학습용 프로필을 만들어 줘.</p>
+      <div class="auth-switch"><button class="btn btn-primary" type="button" id="show-login">로그인</button><button class="btn" type="button" id="show-signup">회원가입</button></div>
+      <p class="auth-status" id="auth-status" role="status"></p>
+      <form id="login-form">
+        <div class="form-field"><label for="login-name">이름 (아이디)</label><input id="login-name" class="field" maxlength="30" autocomplete="username" required placeholder="가입한 이름"></div>
+        <div class="form-field"><label for="login-pin">숫자 비밀번호 4자리</label><input id="login-pin" class="field" type="password" inputmode="numeric" minlength="4" maxlength="4" pattern="[0-9]{4}" autocomplete="off" required placeholder="숫자 4자리"></div>
+        <button class="btn btn-primary" type="submit">로그인하기</button>
+      </form>
+      <form id="signup-form" hidden>
+        <div class="form-field"><label for="signup-name">이름 (아이디)</label><input id="signup-name" class="field" maxlength="30" autocomplete="username" required placeholder="새 이름"></div>
+        <div class="form-field"><label for="signup-pin">숫자 비밀번호 4자리</label><input id="signup-pin" class="field" type="password" inputmode="numeric" minlength="4" maxlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="숫자 4자리"></div>
+        <div class="form-field"><label for="signup-confirm">비밀번호 확인</label><input id="signup-confirm" class="field" type="password" inputmode="numeric" minlength="4" maxlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="다시 입력"></div>
+        <button class="btn btn-primary" type="submit">회원가입 완료</button>
+      </form>
+      <p class="auth-note"><strong>기기 내 프로필:</strong> 이 브라우저에서만 계정과 학습 기록이 유지돼. 다른 기기와 동기화되지 않고 브라우저 데이터를 삭제하면 사라질 수 있어. 진짜 보안 로그인 기능이 아니므로 다른 사이트에서 사용 중인 비밀번호를 쓰지 마.</p>
+    </div>
+  </section>
+  <div id="app-shell" class="hide">
   <header class="site-header">
     <div class="wrap">
       <div class="brand">
         <div class="eyebrow">ENGLISH WORD TRAINER</div>
         <h1>영어 단어 학습장</h1>
-        <p class="sub">단어 암기 · 맞춤형 시험 · 영어 문장 배열</p>
+        <div class="profile-top"><p class="sub">단어 암기 · 맞춤형 시험 · 영어 문장 배열</p><div class="row"><span id="current-profile" class="sub"></span><button type="button" class="btn btn-small" id="logout">로그아웃</button></div></div>
       </div>
       <nav class="tabs" aria-label="학습 기능">
         <button class="tab-btn active" data-tab="words" type="button">단어장</button>
@@ -127,7 +162,8 @@
       <div class="notice">문장 목록도 현재 브라우저에 저장되고, 단어장에서 내보내는 JSON 백업 파일에 함께 포함돼.</div>
     </section>
   </main>
-  <footer class="footer wrap">영어 단어 학습장 · 인터넷 없이도 기본 학습 기능 사용 가능 · 학습 데이터는 기기 내 브라우저에 저장</footer>
+  <footer class="footer wrap">영어 단어 학습장 · 프로필별 학습 기록은 현재 브라우저에 저장 · 기기 간 동기화 미지원</footer>
+  </div>
   <script>
 // 사진 속 영어 단어·뜻·영영풀이 기본 데이터
 window.DEFAULT_WORDS = [
@@ -1289,8 +1325,14 @@ window.DEFAULT_WORDS = [
   <script>
 (() => {
   'use strict';
-  const WORD_KEY = 'english-word-trainer.words.v1';
-  const SENTENCE_KEY = 'english-word-trainer.sentences.v1';
+  const LEGACY_WORD_KEY = 'english-word-trainer.words.v1';
+  const LEGACY_SENTENCE_KEY = 'english-word-trainer.sentences.v1';
+  const ACCOUNTS_KEY = 'english-word-trainer.accounts.v1';
+  const MIGRATED_KEY = 'english-word-trainer.legacy-migrated.v1';
+  let WORD_KEY = '', SENTENCE_KEY = '', STATS_KEY = '', ALIASES_KEY = '';
+  let currentUser = null;
+  let stats = {exams:0, words:{}};
+  let aliases = {};
   const PAGE_SIZE = 20;
   const $ = (id) => document.getElementById(id);
   const qsa = (selector) => [...document.querySelectorAll(selector)];
@@ -1323,21 +1365,130 @@ window.DEFAULT_WORDS = [
     } catch (error) { console.warn('저장 자료를 읽을 수 없습니다.', error); }
     return fallback;
   }
-  let words = sanitizedWords(stored(WORD_KEY, copyDefault()));
-  let sentences = stored(SENTENCE_KEY, []).filter((s) => s && typeof s.text === 'string' && s.text.trim()).map((s) => ({id: String(s.id || randomId()), text: s.text.trim()}));
+  let words = copyDefault();
+  let sentences = [];
   let editWordId = null;
   let currentWordPage = 1;
   let exam = null;
   let practice = null;
 
   function saveWords() {
+    if (!currentUser) return false;
     try { localStorage.setItem(WORD_KEY, JSON.stringify(words)); return true; }
     catch { alert('이 브라우저에 저장할 수 없어. 저장 공간이나 개인정보 보호 모드를 확인해 줘.'); return false; }
   }
   function saveSentences() {
+    if (!currentUser) return false;
     try { localStorage.setItem(SENTENCE_KEY, JSON.stringify(sentences)); return true; }
     catch { alert('문장을 저장할 수 없어. 저장 공간이나 브라우저 설정을 확인해 줘.'); return false; }
   }
+  function saveStats() {
+    if (!currentUser) return;
+    try { localStorage.setItem(STATS_KEY,JSON.stringify(stats)); }
+    catch { alert('기록을 저장할 수 없어. 브라우저 공간을 확인해 줘.'); }
+  }
+  function saveAliases() {
+    if (!currentUser) return;
+    try { localStorage.setItem(ALIASES_KEY,JSON.stringify(aliases)); }
+    catch { alert('추가 정답을 저장할 수 없어.'); }
+  }
+  function getAccounts() {
+    try {
+      const a = JSON.parse(localStorage.getItem(ACCOUNTS_KEY) || '[]');
+      return Array.isArray(a) ? a.filter((u)=>u && typeof u.name === 'string' && typeof u.id === 'string' && typeof u.hash === 'string' && typeof u.salt === 'string') : [];
+    } catch { return []; }
+  }
+  const hex = (bytes) => [...bytes].map((b)=>b.toString(16).padStart(2,'0')).join('');
+  async function hashPin(pin,salt) {
+    if (!crypto?.subtle) throw new Error('암호화 기능이 없어. HTTPS로 접속해 줘.');
+    const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']);
+    const saltBytes=new Uint8Array(salt.match(/../g).map((part)=>parseInt(part,16)));
+    const hash=await crypto.subtle.deriveBits({name:'PBKDF2',salt:saltBytes,iterations:120000,hash:'SHA-256'},key,256);
+    return hex(new Uint8Array(hash));
+  }
+  function authMode(mode) {
+    $('login-form').hidden = mode !== 'login';
+    $('signup-form').hidden = mode !== 'signup';
+    $('show-login').classList.toggle('btn-primary',mode === 'login');
+    $('show-signup').classList.toggle('btn-primary',mode === 'signup');
+    $('auth-status').textContent = '';
+    $('auth-status').style.color='var(--danger)';
+  }
+  $('show-login').addEventListener('click',()=>authMode('login'));
+  $('show-signup').addEventListener('click',()=>authMode('signup'));
+  $('signup-form').addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    const name=$('signup-name').value.trim(),pin=$('signup-pin').value,again=$('signup-confirm').value;
+    if (!name || !/^[0-9]{4}$/.test(pin) || pin!==again) {
+      $('auth-status').textContent='이름과 숫자 비밀번호 4자리, 비밀번호 확인을 확인해 줘.';return;
+    }
+    if(getAccounts().some((u)=>normalize(u.name)===normalize(name))) {
+      $('auth-status').textContent='이미 사용 중인 이름이야. 다른 이름을 선택해 줘.';return;
+    }
+    try {
+      const salt=hex(crypto.getRandomValues(new Uint8Array(16)));
+      const hash=await hashPin(pin,salt);
+      const accounts=getAccounts();
+      if(accounts.some((u)=>normalize(u.name)===normalize(name))) {
+        $('auth-status').textContent='이미 사용 중인 이름이야.';return;
+      }
+      accounts.push({id:'profile-'+hex(crypto.getRandomValues(new Uint8Array(12))),name,hash,salt});
+      localStorage.setItem(ACCOUNTS_KEY,JSON.stringify(accounts));
+      $('signup-form').reset();authMode('login');$('login-name').value=name;
+      $('auth-status').style.color='#176b60';$('auth-status').textContent='가입을 완료했어. 로그인해 줘.';
+    } catch(e) { $('auth-status').textContent=e.message || '가입을 저장하지 못했어.'; }
+  });
+  function loadProfile(user) {
+    currentUser=user;
+    const prefix='english-word-trainer.profile.'+user.id+'.';
+    WORD_KEY=prefix+'words.v1';SENTENCE_KEY=prefix+'sentences.v1';
+    STATS_KEY=prefix+'stats.v1';ALIASES_KEY=prefix+'aliases.v1';
+    // 업데이트 전 저장한 단어와 문장은 첫 번째 계정으로 한 번 복사한다.
+    if (!localStorage.getItem(MIGRATED_KEY) && getAccounts()[0]?.id===user.id) {
+      try {
+        const oldWords=localStorage.getItem(LEGACY_WORD_KEY),oldSentences=localStorage.getItem(LEGACY_SENTENCE_KEY);
+        if(oldWords!==null && localStorage.getItem(WORD_KEY)===null)localStorage.setItem(WORD_KEY,oldWords);
+        if(oldSentences!==null && localStorage.getItem(SENTENCE_KEY)===null)localStorage.setItem(SENTENCE_KEY,oldSentences);
+        localStorage.setItem(MIGRATED_KEY,'1');
+      } catch(e) { console.warn('이전 저장 자료 복사 오류:',e); }
+    }
+    words=sanitizedWords(stored(WORD_KEY,copyDefault()));
+    sentences=stored(SENTENCE_KEY,[]).filter((s)=>s && typeof s.text==='string' && s.text.trim()).map((s)=>({id:String(s.id||randomId()),text:s.text.trim()}));
+    try {
+      const d=JSON.parse(localStorage.getItem(STATS_KEY)||'{}');
+      stats=d && Number.isFinite(d.exams) && d.words && typeof d.words==='object' && !Array.isArray(d.words) ? d : {exams:0,words:{}};
+    }catch{stats={exams:0,words:{}};}
+    try {
+      const d=JSON.parse(localStorage.getItem(ALIASES_KEY)||'{}');
+      aliases=d && typeof d==='object' && !Array.isArray(d) ? d : {};
+    }catch{aliases={};}
+    exam=null;practice=null;
+    $('current-profile').textContent=user.name+' 프로필';
+    $('auth-shell').classList.add('hide');$('app-shell').classList.remove('hide');
+    resetWordForm();currentWordPage=1;$('word-search').value='';$('word-filter').value='all';
+    $('sentence-practice').classList.add('hide');$('exam-filter').value='all';
+    viewExam('setup');showTab('words');renderWords();renderSentences();
+  }
+  $('login-form').addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    const name=$('login-name').value.trim(),pin=$('login-pin').value;
+    const user=getAccounts().find((u)=>normalize(u.name)===normalize(name));
+    if(!user||!/^[0-9]{4}$/.test(pin)) {
+      $('auth-status').textContent='이름 또는 비밀번호가 올바르지 않아.';return;
+    }
+    try {
+      if(await hashPin(pin,user.salt)!==user.hash) {
+        $('auth-status').textContent='이름 또는 비밀번호가 올바르지 않아.';return;
+      }
+      $('login-form').reset();loadProfile(user);
+    }catch(e){$('auth-status').textContent=e.message||'로그인할 수 없어.';}
+  });
+  $('logout').addEventListener('click',()=>{
+    exam=null;practice=null;currentUser=null;
+    words=copyDefault();sentences=[];stats={exams:0,words:{}};aliases={};
+    $('app-shell').classList.add('hide');$('auth-shell').classList.remove('hide');
+    authMode('login');$('login-form').reset();window.scrollTo({top:0});
+  });
   function inScope(item, scope) {
     if (scope === 'custom') return item.source !== '기본';
     const page = Number(item.page);
