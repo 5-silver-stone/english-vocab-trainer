@@ -43,6 +43,14 @@
 .auth-status{min-height:22px;font-size:13px;color:var(--danger);margin:8px 0}
 .profile-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
 @media(max-width:680px){.auth-card{padding:20px}}
+
+.record-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.record-item{padding:15px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:11px}
+.record-item .top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.record-name{font-size:18px;font-weight:800}
+.record-entry{border-top:1px solid var(--line);padding-top:9px;margin-top:9px;font-size:13px;overflow-wrap:anywhere}
+.record-risk{font-weight:800;color:#b02e3a}.record-normal{font-weight:800;color:#936b1e}.record-safe{font-weight:800;color:#237453}
+@media(max-width:680px){.record-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -79,6 +87,7 @@
         <button class="tab-btn active" data-tab="words" type="button">단어장</button>
         <button class="tab-btn" data-tab="exam" type="button">단어 시험</button>
         <button class="tab-btn" data-tab="sentences" type="button">문장 배열</button>
+        <button class="tab-btn" data-tab="records" type="button">시험 기록</button>
       </nav>
     </div>
   </header>
@@ -110,6 +119,11 @@
           <div class="form-grid">
             <div class="form-field"><label for="word-english">영단어 / 표현</label><input class="field" id="word-english" placeholder="예: sustainable" maxlength="120" required></div>
             <div class="form-field"><label for="word-meaning">한국어 뜻</label><input class="field" id="word-meaning" placeholder="예: 지속 가능한" maxlength="240" required></div>
+            <div class="form-field wide">
+              <label for="word-aliases">추가 인정 뜻 (선택 · 확인한 사전 뜻)</label>
+              <input class="field" id="word-aliases" maxlength="600" placeholder="예: 고치다, 수선하다">
+              <p class="hint">교재 뜻 이외의 정답도 인정하려면 쉼표로 구분해서 입력해 줘. 사전의 모든 뜻을 자동 검색하는 기능은 아니야.</p>
+            </div>
             <div class="form-field wide"><label for="word-definition">영영풀이 (선택)</label><textarea class="field-textarea" id="word-definition" rows="2" maxlength="1500" placeholder="예: capable of continuing without harming the environment"></textarea></div>
           </div>
           <div class="row"><button class="btn btn-primary" id="word-save" type="submit">단어 저장</button><button class="btn" id="word-form-reset" type="button">입력 취소</button><span class="sub" id="word-form-status" role="status"></span></div>
@@ -159,7 +173,24 @@
         <div class="row" style="margin-top:18px"><button class="btn btn-primary" id="check-sentence" type="button">정답 확인</button><button class="btn" id="retry-sentence" type="button">다시 섞기</button></div>
         <div class="sentence-feedback hide" id="sentence-feedback" role="status"></div>
       </div>
-      <div class="notice">문장 목록도 현재 브라우저에 저장되고, 단어장에서 내보내는 JSON 백업 파일에 함께 포함돼.</div>
+      <div class="notice">문장 목록도 로그인한 프로필에 저장되고, JSON 백업 파일에 포함돼.</div>
+    </section>
+    <section id="tab-records" class="tab-panel stack" hidden>
+      <div class="panel">
+        <h2>나의 단어 시험 기록</h2>
+        <p class="sub">로그인한 계정이 제출한 시험만 집계해. 틀린 답과 정답, 문제 유형 및 횟수를 확인할 수 있어.</p>
+        <div class="record-grid" style="margin-top:17px">
+          <div class="stat"><span class="stat-value" id="record-exams">0</span><span class="stat-title">완료한 시험</span></div>
+          <div class="stat"><span class="stat-value" id="record-accuracy">-</span><span class="stat-title">전체 정답률</span></div>
+          <div class="stat"><span class="stat-value" id="record-missed">0</span><span class="stat-title">틀린 적 있는 단어</span></div>
+        </div>
+        <p class="hint">정답률 50% 미만: 위험 · 50% 이상 80% 미만: 평범 · 80% 이상: 안전. 기록이 없는 단어는 미분류야.</p>
+        <div class="toolbar" style="margin-top:18px"><label for="record-filter" style="font-weight:700">기록 보기</label>
+          <select class="select" id="record-filter"><option value="wrong">틀린 적 있는 단어</option><option value="all">응시한 전체 단어</option><option value="risk">위험</option><option value="normal">평범</option><option value="safe">안전</option></select>
+        </div>
+        <div id="record-items"></div>
+        <p class="hint" style="margin-top:15px">기록에는 내가 입력한 오답과 실제 정답을 보여줘. 기록은 이 브라우저의 프로필별 저장 공간에 보관돼.</p>
+      </div>
     </section>
   </main>
   <footer class="footer wrap">영어 단어 학습장 · 프로필별 학습 기록은 현재 브라우저에 저장 · 기기 간 동기화 미지원</footer>
@@ -1498,7 +1529,7 @@ window.DEFAULT_WORDS = [
   }
   function setStatus(element, message) { element.textContent = message; }
   function showTab(name) {
-    for (const tab of ['words','exam','sentences']) {
+    for (const tab of ['words','exam','sentences','records']) {
       $('tab-' + tab).hidden = tab !== name;
     }
     qsa('.tab-btn').forEach((btn) => {
@@ -1508,6 +1539,7 @@ window.DEFAULT_WORDS = [
     });
     if (name === 'words') renderWords();
     if (name === 'sentences') renderSentences();
+    if (name === 'records') renderRecords();
     window.scrollTo({top:0,behavior:'smooth'});
   }
   qsa('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
@@ -1548,6 +1580,7 @@ window.DEFAULT_WORDS = [
       $('word-english').value = word.word;
       $('word-meaning').value = word.meaning;
       $('word-definition').value = word.definition;
+      $('word-aliases').value = (Array.isArray(aliases[word.id]) ? aliases[word.id] : []).join(', ');
       $('word-form-title').textContent = '영단어 수정';
       $('word-save').textContent = '수정 저장';
       $('word-form-status').textContent = '';
@@ -1557,6 +1590,7 @@ window.DEFAULT_WORDS = [
       const word = words.find((w) => w.id === del.dataset.delete);
       if (!word || !confirm(`'${word.word}' 단어를 삭제할까?`)) return;
       words = words.filter((w) => w.id !== word.id);
+      delete aliases[word.id]; saveAliases();
       saveWords();
       if (editWordId === word.id) resetWordForm();
       renderWords();
@@ -1575,27 +1609,33 @@ window.DEFAULT_WORDS = [
     const english = $('word-english').value.trim();
     const meaning = $('word-meaning').value.trim();
     const definition = $('word-definition').value.trim();
+    const extra = [...new Set($('word-aliases').value.split(/[,，、;；]/).map((value)=>value.trim()).filter(Boolean))];
     if (!english || !meaning) return;
     const duplicate = words.some((w) => w.id !== editWordId && normalize(w.word) === normalize(english));
     if (duplicate) {setStatus($('word-form-status'),'이미 등록된 영단어야. 기존 단어를 수정해 줘.'); return;}
+    let wordId;
     if (editWordId) {
       const item = words.find((w) => w.id === editWordId);
       if (!item) {resetWordForm(); return;}
       Object.assign(item,{word:english,meaning,definition});
+      wordId = item.id;
     } else {
-      words.push({id:randomId(),word:english,meaning,definition,page:'-',source:'추가'});
+      wordId = randomId();
+      words.push({id:wordId,word:english,meaning,definition,page:'-',source:'추가'});
     }
-    saveWords(); resetWordForm();
+    if(extra.length) aliases[wordId]=extra;
+    else delete aliases[wordId];
+    saveWords();saveAliases();resetWordForm();
     $('word-form-status').textContent = '저장했어!';
     currentWordPage = 1; $('word-search').value = ''; $('word-filter').value = 'all';
     renderWords();
   });
   $('reset-words').addEventListener('click', () => {
     if (!confirm('단어장 전체를 초기 사진의 기본 144개로 되돌릴까? 직접 추가하거나 수정한 단어도 사라져.\n먼저 JSON 백업을 저장하는 걸 권장해.')) return;
-    words = copyDefault(); saveWords(); resetWordForm(); renderWords();
+    words = copyDefault(); aliases={}; saveWords(); saveAliases(); resetWordForm(); renderWords();
   });
   $('export-json').addEventListener('click', () => {
-    const content = JSON.stringify({version:1, exportedAt:new Date().toISOString(), words, sentences},null,2);
+    const content = JSON.stringify({version:2, exportedAt:new Date().toISOString(), words, sentences, stats, aliases},null,2);
     const blob = new Blob([content],{type:'application/json;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a'); link.href = url;
@@ -1615,7 +1655,9 @@ window.DEFAULT_WORDS = [
       if (!confirm(`이 백업의 단어 ${payload.words.length}개와 문장 ${payload.sentences.length}개로 현재 데이터를 교체할까?`)) return;
       words = sanitizedWords(payload.words);
       sentences = payload.sentences.map((s) => ({id:String(s.id || randomId()),text:s.text.trim()})).filter((s) => s.text);
-      saveWords(); saveSentences(); resetWordForm(); renderWords(); renderSentences();
+      if (payload.stats && typeof payload.stats.exams==='number' && payload.stats.words && typeof payload.stats.words==='object') stats=payload.stats;
+      if (payload.aliases && typeof payload.aliases==='object' && !Array.isArray(payload.aliases)) aliases=payload.aliases;
+      saveWords(); saveSentences(); saveStats(); saveAliases(); resetWordForm(); renderWords(); renderSentences(); renderRecords();
       alert('백업을 불러왔어.');
     } catch (error) {alert('백업 파일을 읽지 못했어. 이 사이트에서 저장한 JSON 파일인지 확인해 줘.');}
   });
@@ -1704,7 +1746,8 @@ window.DEFAULT_WORDS = [
     const typed = normalize(p.answer);
     if (!typed) return false;
     const complete = normalize(p.word.meaning);
-    return typed === complete || String(p.word.meaning).split(/[,，、;；]/).some((part) => normalize(part) === typed);
+    return typed === complete || String(p.word.meaning).split(/[,，、;；]/).some((part) => normalize(part) === typed) ||
+      (Array.isArray(aliases[p.word.id]) && aliases[p.word.id].some((part) => normalize(part) === typed));
   }
   function finishExam() {
     const blankCount = exam.problems.filter((p) => !String(p.answer).trim()).length;
@@ -1713,6 +1756,22 @@ window.DEFAULT_WORDS = [
     const total = exam.problems.length;
     $('exam-score').textContent = `${right} / ${total}`;
     $('exam-score-percent').textContent = `정답률 ${Math.round(100 * right / total)}%`;
+    // 시험 완료 시 각 문제를 단어별로 1번씩 누적 기록한다.
+    for (const p of exam.problems) {
+      const id=p.word.id;
+      const record=stats.words[id] || {word:p.word.word,meaning:p.word.meaning,correct:0,wrong:0,mistakes:[]};
+      record.word=p.word.word;record.meaning=p.word.meaning;
+      if (correctExamAnswer(p)) record.correct=(Number(record.correct)||0)+1;
+      else {
+        record.wrong=(Number(record.wrong)||0)+1;
+        if(!Array.isArray(record.mistakes))record.mistakes=[];
+        record.mistakes.unshift({time:new Date().toISOString(),type:p.type,answer:String(p.answer || '(미응답)'),expected:p.type==='meaning'?p.word.meaning:p.word.word});
+        record.mistakes=record.mistakes.slice(0,100);
+      }
+      stats.words[id]=record;
+    }
+    stats.exams=(Number(stats.exams)||0)+1;
+    saveStats();
     $('review-list').innerHTML = exam.problems.map((p,index) => {
       const correct = p.type === 'meaning' ? p.word.meaning : p.word.word;
       const isCorrect = correctExamAnswer(p);
@@ -1725,9 +1784,65 @@ window.DEFAULT_WORDS = [
       </div>`;
     }).join('');
     viewExam('results');
+    renderRecords();
     $('exam-results').scrollIntoView({behavior:'smooth',block:'start'});
   }
   $('exam-restart').addEventListener('click', () => {exam=null;viewExam('setup');$('exam-setup').scrollIntoView({behavior:'smooth',block:'start'});});
+
+  function recordStatus(record) {
+    const good=Math.max(0,Number(record.correct)||0),bad=Math.max(0,Number(record.wrong)||0);
+    const ratio=good/(good+bad || 1);
+    return ratio<0.5 ? ['위험','record-risk','risk'] : ratio<0.8 ? ['평범','record-normal','normal'] : ['안전','record-safe','safe'];
+  }
+  function renderRecords() {
+    if(!currentUser) return;
+    const entries=Object.values(stats.words).filter((r)=>r && typeof r==='object' && (Number(r.correct)||0)+(Number(r.wrong)||0)>0);
+    const totalRight=entries.reduce((n,r)=>n+(Number(r.correct)||0),0);
+    const totalWrong=entries.reduce((n,r)=>n+(Number(r.wrong)||0),0);
+    $('record-exams').textContent=Number(stats.exams)||0;
+    $('record-accuracy').textContent=totalRight+totalWrong?Math.round(100*totalRight/(totalRight+totalWrong))+'%':'-';
+    $('record-missed').textContent=entries.filter((r)=>Number(r.wrong)>0).length;
+    const filter=$('record-filter').value;
+    const chosen=entries.filter((r)=>{
+      if(filter==='wrong')return Number(r.wrong)>0;
+      if(filter==='all')return true;
+      return recordStatus(r)[2]===filter;
+    }).sort((a,b)=>{
+      const ar=(Number(a.wrong)||0)/((Number(a.correct)||0)+(Number(a.wrong)||0));
+      const br=(Number(b.wrong)||0)/((Number(b.correct)||0)+(Number(b.wrong)||0));
+      return br-ar || (Number(b.wrong)||0)-(Number(a.wrong)||0);
+    });
+    const list=$('record-items');list.replaceChildren();
+    if(!chosen.length){const msg=document.createElement('p');msg.className='empty';msg.textContent='이 조건에 맞는 시험 기록이 아직 없어.';list.appendChild(msg);return;}
+    for(const r of chosen) {
+      const good=Number(r.correct)||0,bad=Number(r.wrong)||0,total=good+bad;
+      const [label,css]=recordStatus(r);
+      const card=document.createElement('article');card.className='record-item';
+      const top=document.createElement('div');top.className='top';
+      const name=document.createElement('strong');name.className='record-name';name.textContent=r.word||'(단어)';
+      const category=document.createElement('span');category.className=css;category.textContent=label;
+      top.append(name,category);
+      const meaning=document.createElement('p');meaning.className='sub';meaning.textContent=r.meaning||'';
+      const counts=document.createElement('p');counts.textContent='정답 '+good+'회 · 오답 '+bad+'회 · 정답률 '+Math.round(100*good/total)+'%';
+      card.append(top,meaning,counts);
+      if(Array.isArray(r.mistakes)&&r.mistakes.length) {
+        const details=document.createElement('details');details.style.marginTop='10px';
+        const summary=document.createElement('summary');summary.textContent='오답 내역 보기 ('+r.mistakes.length+'개 저장)';
+        details.appendChild(summary);
+        for(const mistake of r.mistakes.slice(0,30)) {
+          const p=document.createElement('div');p.className='record-entry';
+          const type=({meaning:'뜻',spelling:'스펠링',definition:'영영풀이'})[mistake.type]||'시험';
+          const when=new Date(mistake.time);
+          const date=Number.isNaN(when.getTime())?'':when.toLocaleString('ko-KR')+' · ';
+          p.textContent=date+type+' · 입력: '+String(mistake.answer||'(미응답)')+' · 정답: '+String(mistake.expected||'');
+          details.appendChild(p);
+        }
+        card.appendChild(details);
+      }
+      list.appendChild(card);
+    }
+  }
+  $('record-filter').addEventListener('change',renderRecords);
 
   function renderSentences() {
     $('sentence-count').textContent = `저장된 문장 ${sentences.length}개`;
